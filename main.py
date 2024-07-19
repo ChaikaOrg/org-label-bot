@@ -65,6 +65,10 @@ def processLabelMapping(label_mapping: LabelMapping, pull_request):
     print(f"approve: {approve}")
     if approve:
         pull_request.add_to_labels(label_mapping.label_name)
+    else:
+        for label in pr_labels:
+            if label.name == label_mapping.label_name:
+                pull_request.remove_from_labels(label_mapping.label_name)
 
 
 if __name__ == '__main__':
