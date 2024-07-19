@@ -37,6 +37,8 @@ def processLabelMapping(label_mapping: LabelMapping, pull_request):
 
     # If there is at least one requisition for a review from a team -> remove the tag of this team
     requesters, team = pull_request.get_review_requests()
+    print(f"requesters: {requesters}")
+    print(f"team: {team}")
     for requester in requesters:
         print(f"requester: {requester}")
         if requester in label_mapping.team_members:
