@@ -24,6 +24,7 @@ def get_from_env(var_name):
 def initLabelMapping(org, rules):
     result = []
     for team_name, label in rules:
+        print(f"team_name: {team_name}, label: {label}")
         team = org.get_team_by_slug(team_name)
         team_members = list(team.get_members())
         result.append(LabelMapping(team_name, label, team_members))
@@ -74,6 +75,8 @@ if __name__ == '__main__':
     auth = Auth.Token(get_from_env("GITHUB_TOKEN"))
 
     with Github(auth=auth) as gh:
+        print(f"github_event['organization']['login']: {github_event['organization']['login']}")
+        print(f"github_event['repository']['name']: {github_event['repository']['name']}")
         github_org = gh.get_organization(github_event['organization']['login'])
         repo = github_org.get_repo(github_event['repository']['name'])
 
@@ -83,6 +86,7 @@ if __name__ == '__main__':
         # logging.info(f"labelMapping: {labelMapping}")
         print(labelMapping)
 
+        print(f"github_event['pull_request']['number']: {github_event['pull_request']['number']}")
         pull_request = repo.get_pull(github_event['pull_request']['number'])
         for label in labelMapping:
             processLabelMapping(label, pull_request)
