@@ -1,0 +1,14 @@
+name: PullRequest review labeler
+on: pull_request_review
+jobs:
+  labeler:
+    name: Label PR
+    runs-on: ubuntu-latest
+#    container: python:3.10-alpine
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install requirements
+        run: pip3 install -r requirements.txt
+      - name: Run main.py
+        run: python3 main.py
