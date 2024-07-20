@@ -21,4 +21,4 @@ jobs:
         run: python3 main.py
         env:
           RULES: '[["TeamRabbit", "rabbits"]]'
-          GITHUB_TOKEN: ${{ secrets.LABELER_ACTION_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.LABELER_APP_TOKEN }}
