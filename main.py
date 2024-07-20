@@ -1,4 +1,5 @@
 import logging
+from github import PullRequestReview
 from github import Github
 from github import Auth
 from collections import defaultdict
@@ -31,6 +32,20 @@ def initLabelMapping(org, rules):
     return result
 
 
+def is_reviewer_waiting(reviews: list[PullRequestReview]):
+    approved_index = -1
+    changes_requested_index = -1
+    length = len(reviews)
+    for i, review in enumerate(reversed(reviews)):
+        if review.state == "APPROVED":
+            approved_index = approved_index if approved_index != -1 else length - 1 - i
+        if review.state == "CHANGES_REQUESTED":
+            changes_requested_index = changes_requested_index if changes_requested_index != -1 else length - 1 - i
+    print(f"approved index: {approved_index}")
+    print(f"changes requested index: {changes_requested_index}")
+    return approved_index < changes_requested_index
+
+
 def processLabelMapping(label_mapping: LabelMapping, pull_request):
     pr_labels = list(pull_request.get_labels())
     print(f"Labels: {pr_labels}")
@@ -55,12 +70,14 @@ def processLabelMapping(label_mapping: LabelMapping, pull_request):
 
     # If among those who made at least one review, the last review is not APPROVED -> do not put a label
     approve = True
+    # Grouping reviews by author
     reviews_by_author = defaultdict(list)
     for rev in reviews:
         if rev.user in label_mapping.team_members:
             reviews_by_author[rev.user.login].append(rev)
+    # For each author in reviews activity
     for value in reviews_by_author.values():
-        if value[-1].state != "APPROVED":
+        if is_reviewer_waiting(value):
             approve = False
     print(f"approve: {approve}")
     if approve:
