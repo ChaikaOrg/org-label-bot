@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-22.04
 #    container: python:3.10-alpine
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Checkout code
         uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,4 +27,4 @@ jobs:
         run: python3 main.py
         env:
           RULES: '[["TeamRabbit", "rabbits"]]'
-          GITHUB_TOKEN: ${{ secrets.LABELER_APP_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
