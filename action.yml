@@ -3,35 +3,15 @@
 name: 'Hello World'
 description: 'Greet someone'
 inputs:
-  bot-app-id:
+  github-token:
     description: 'Input that uses a secret'
     required: true
-  bot-app-key:
+  rules:
     description: 'Input that uses a secret'
     required: true
 runs:
-  using: "composite"
-  steps:
-    - name: LS
-      run: ls -la
-      shell: bash
-    - name: Generate a token
-      id: generate-token
-      uses: actions/create-github-app-token@v1
-      with:
-        app-id:  ${{ inputs.bot-app-id }}
-        private-key: ${{ inputs.bot-app-key }}
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-        cache: 'pip' # caching pip dependencies
-    - run: pip3 install -r requirements.txt
-      shell: bash
-    - name: Run main.py
-      run: python3 main.py
-      shell: bash
-      env:
-        RULES: '[["TeamRabbit", "rabbits"]]'
-        GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+  using: "docker"
+  image: "Dockerfile"
+  env:
+    RULES: ${{inputs.rules}}
+    GITHUB_TOKEN: ${{ inputs.github-token }}
