@@ -1,13 +1,11 @@
-#https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
-
-name: 'Hello World'
-description: 'Greet someone'
+name: 'PullRequest review labeler'
+description: 'Set labels when members from specific team approving PR'
 inputs:
   github-token:
-    description: 'Input that uses a secret'
+    description: 'Github token with Org teams read permitting'
     required: true
   rules:
-    description: 'Input that uses a secret'
+    description: 'Mapping between team name and label name'
     required: true
 runs:
   using: "docker"
