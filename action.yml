@@ -10,5 +10,5 @@ runs:
   using: "composite"
   steps:
     - name: Set Greeting
-      run: echo "Hello INPUT_SECRET_INPUT."
+      run: echo $INPUT_SECRET_INPUT
       shell: bash
