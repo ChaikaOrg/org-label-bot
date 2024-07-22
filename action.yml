@@ -10,5 +10,5 @@ runs:
   using: "composite"
   steps:
     - name: Set Greeting
-      run: echo $INPUT_SECRET_INPUT
+      run: python3 test.py
       shell: bash
