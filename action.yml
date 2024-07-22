@@ -39,8 +39,8 @@ runs:
       id: generate-token
       uses: actions/create-github-app-token@v1
       with:
-        app-id: ${{ LABELER_APP_ID }}
-        private-key: ${{ LABELER_APP_PRIVATE_KEY }}
+        app-id: $LABELER_APP_ID
+        private-key: $LABELER_APP_PRIVATE_KEY
 
     - uses: actions/setup-python@v5
       with:
