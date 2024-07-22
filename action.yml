@@ -7,5 +7,9 @@ inputs:
     description: 'Input that uses a secret'
     required: true
 runs:
-  using: 'docker'
-  image: 'test.Dockerfile'
+  using: 'composite'
+  steps:
+    - name: Print Secret Input
+      run: |
+        echo "The Secret Input is: ${{ inputs.secret-input }}"
+      shell: bash
